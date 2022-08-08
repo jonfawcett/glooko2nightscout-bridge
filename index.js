@@ -129,10 +129,13 @@ function do_everything (opts, then) {
 
     fetch(Defaults.LatestFoods, fetch_opts, function (err, res, foods) {
       fetch(Defaults.LatestInsulins, fetch_opts, function (err, res, insulins) {
-        arr['foods'] = foods;
-        arr['insulins'] = insulins;
-        console.log("Foods: " + foods.length + " Insulins:" + insulins.length);
-        then(err, arr);  
+        fetch(Defaults.LatestPumpBolus, fetch_opts, function(err, res, boluses) {
+          arr['foods'] = foods;
+          arr['insulins'] = insulins;
+          arr['pumpBoluses'] = boluses
+          console.log(arr);
+          then(err, arr);
+        })
       });
     });
   });
@@ -147,6 +150,7 @@ function generate_nightscout_treatments(entries, then) {
       // Carb Correction  
   var foods = entries['foods']['foods']; //ugh
   var insulins = entries['insulins']['insulins'];
+  var pumpBoluses = entries['pumpBoluses']['normalBoluses']
   
   var treatments = []
   
@@ -235,11 +239,24 @@ function generate_nightscout_treatments(entries, then) {
         //treatment.eventTime = f_date.toISOString( );
         treatments.push(treatment);
       }
-
-      
-
-
     });    
+  }
+
+  if (pumpBoluses) {
+    pumpBoluses.forEach(function(element) {
+      var treatment = {};
+
+      console.log(element);
+      
+      var f_date = moment(element.pumpTimestamp);
+      treatment.eventType = 'Meal Bolus';
+      treatment.eventTime = new Date(f_date + 420*60000).toISOString( );
+      treatment.insulin = element.insulinDelivered;
+      treatment.carbs = element.carbsInput;
+      treatment.notes = JSON.stringify(element);
+      //treatment.eventTime = f_date.toISOString( );
+      treatments.push(treatment);
+    })
   }
 
   then(err, treatments);
@@ -286,10 +303,13 @@ function engine (opts) {
       var arr = {};
       fetch(Defaults.LatestFoods, fetch_opts, function (err, res, foods) {
         fetch(Defaults.LatestInsulins, fetch_opts, function (err, res, insulins) {
-          arr['foods'] = foods;
-          arr['insulins'] = insulins;
-          console.log(arr);
-          to_nightscout(arr);
+          fetch(Defaults.LatestPumpBolus, fetch_opts, function(err, res, boluses) {
+            arr['foods'] = foods;
+            arr['insulins'] = insulins;
+            arr['pumpBoluses'] = boluses;
+            console.log(arr);
+            to_nightscout(arr);
+          });
         });
       });
     } else {
@@ -405,8 +425,14 @@ if (!module.parent) {
       });*/
       break;
     case 'fetch':
-      config = { sessionID: args[1] };
-      fetch(config, console.log.bind(console, 'fetched'));
+      var now = Date.now();
+      var then = new Date(now - 7200*60000)
+      config = { sessionID: args[1], lastUpdatedAt: then.toISOString() };
+      console.log(config)
+      fetch(Defaults.LatestPumpBolus, config, function(err, res, foods) {
+        console.log(err)
+        console.log(foods)
+      });
       break;
     case 'testdaemon':
       setInterval(engine(meta), 2500);
