@@ -46,6 +46,8 @@ var Defaults = {
 , 'content-type': 'application/json'
 , LatestFoods: 'https://' + server + '/api/v2/foods'
 , LatestInsulins: 'https://' + server + '/api/v2/insulins'
+, LatestPumpBasals: 'https://' + server + '/api/v2/pumps/scheduled_basals'
+, LatestPumpBolus: 'https://' + server + '/api/v2/pumps/normal_boluses'
 // ?sessionID=e59c836f-5aeb-4b95-afa2-39cf2769fede&minutes=1440&maxCount=1"
 , nightscout_upload: '/api/v1/treatments'
 , MIN_PASSPHRASE_LENGTH: 12
