@@ -286,7 +286,7 @@ function engine (opts) {
         fetch(Defaults.LatestInsulins, fetch_opts, function (err, res, insulins) {
           arr['foods'] = foods;
           arr['insulins'] = insulins;
-          //console.log(arr);
+          console.log(arr);
           to_nightscout(arr);
         });
       });
