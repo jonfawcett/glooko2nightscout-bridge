@@ -373,7 +373,7 @@ if (!module.parent) {
   };
   var ns_config = {
     API_SECRET: readENV('API_SECRET')
-  , endpoint: readENV('NS', 'http://' + readENV('WEBSITE_HOSTNAME'))
+  , endpoint: readENV('NS', 'https://' + readENV('WEBSITE_HOSTNAME'))
   };
   var interval = readENV('SHARE_INTERVAL', 60000 * 2.5);
   var fetch_config = { maxCount: readENV('maxCount', 1)
