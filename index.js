@@ -45,7 +45,7 @@ var Defaults = {
 , accept: 'application/json'
 , 'content-type': 'application/json'
 , LatestFoods: 'https://' + server + '/api/v2/foods'
-, LatestInsulins: 'https://' + server + '/api/v2/external/pumps/normal_boluses'
+, LatestInsulins: 'https://' + server + '/api/v2/insulins'
 // ?sessionID=e59c836f-5aeb-4b95-afa2-39cf2769fede&minutes=1440&maxCount=1"
 , nightscout_upload: '/api/v1/treatments'
 , MIN_PASSPHRASE_LENGTH: 12
@@ -144,9 +144,7 @@ function generate_nightscout_treatments(entries, then) {
       // Correction Bolus
       // Carb Correction  
   var foods = entries['foods']['foods']; //ugh
-  var insulins = entries['insulins'];//['pumpsNormalBoluses']['insulinDelivered'];
-  console.log(insulins)
-  // console.log(entries['insulins'])
+  var insulins = entries['insulins']['insulins'];
   
   var treatments = []
   
