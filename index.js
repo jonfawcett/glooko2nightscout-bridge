@@ -328,6 +328,8 @@ function engine (opts) {
           ns_config.treatments = treatments;
           // Send data to Nightscout.
          report_to_nightscout(ns_config, function (err, response, body) {
+            console.log("HERE:", response.headers)
+            console.log("HERE:", response)
             console.log("Nightscout Glooko upload", 'error', err, 'status', response.statusCode, body);
 
           });
