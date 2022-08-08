@@ -144,9 +144,9 @@ function generate_nightscout_treatments(entries, then) {
       // Correction Bolus
       // Carb Correction  
   var foods = entries['foods']['foods']; //ugh
-  var insulins = entries['insulins']['pumpsNormalBoluses']['insulinDelivered'];
+  var insulins = entries['insulins'];//['pumpsNormalBoluses']['insulinDelivered'];
   console.log(insulins)
-  console.log(entries['insulins'])
+  // console.log(entries['insulins'])
   
   var treatments = []
   
