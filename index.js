@@ -47,7 +47,7 @@ var Defaults = {
 , LatestFoods: 'https://' + server + '/api/v2/foods'
 , LatestInsulins: 'https://' + server + '/api/v2/insulins'
 // ?sessionID=e59c836f-5aeb-4b95-afa2-39cf2769fede&minutes=1440&maxCount=1"
-, nightscout_upload: '/api/v1/treatments.json'
+, nightscout_upload: '/api/v1/treatments'
 , MIN_PASSPHRASE_LENGTH: 12
 };
 
@@ -318,7 +318,7 @@ function engine (opts) {
     if (entries) {
       generate_nightscout_treatments(entries, function(err, treatments) {
         //var entries = glucose.map(dex_to_entry);
-        console.log('TREATMENTS='+treatments);
+        console.log('TREATMENTS=', treatments);
         //console.log(opts.callback);
         if (opts && opts.callback && opts.callback.call) {
           opts.callback(null, treatments);
@@ -328,8 +328,7 @@ function engine (opts) {
           ns_config.treatments = treatments;
           // Send data to Nightscout.
          report_to_nightscout(ns_config, function (err, response, body) {
-            console.log("HERE:", response.headers)
-            console.log("HERE:", response)
+            // console.log("HERE:", response)
             console.log("Nightscout Glooko upload", 'error', err, 'status', response.statusCode, body);
 
           });
