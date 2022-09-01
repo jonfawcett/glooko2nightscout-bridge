@@ -203,6 +203,7 @@ function generate_nightscout_treatments(entries, then) {
       treatment.notes = JSON.stringify(element);
       
       treatments.push(treatment);
+      console.log(treatment)
 
 
     });    
@@ -276,6 +277,7 @@ function report_to_nightscout (opts, then) {
   console.log(url);
   var req = { uri: url, body: opts.treatments, json: true, headers: headers, method: 'POST'
             , rejectUnauthorized: false };
+  console.log(req)
   return request(req, then);
 
 }
@@ -351,7 +353,7 @@ function engine (opts) {
           ns_config.treatments = treatments;
           // Send data to Nightscout.
          report_to_nightscout(ns_config, function (err, response, body) {
-            // console.log("HERE:", response)
+            console.log("HERE:", response)
             console.log("Nightscout Glooko upload", 'error', err, 'status', response.statusCode, body);
 
           });
