@@ -25,6 +25,7 @@ var qs = require('querystring');
 var crypto = require('crypto');
 // var PubNub = require('pubnub');
 var moment = require('moment-timezone');
+var offset = 300;
 
 // Defaults
 var server = "api.glooko.com"
@@ -183,7 +184,7 @@ function generate_nightscout_treatments(entries, then) {
       if (insulin != undefined) {
         var i_date = moment(insulin.timestamp);
         treatment.eventType = 'Meal Bolus';
-        treatment.eventTime = new Date(i_date + 420*60000).toISOString( );
+        treatment.eventTime = new Date(i_date + offset*60000).toISOString( );
         //treatment.eventTime = new Date(i_date).toISOString( );
         //treatment.eventTime = i_date.toISOString( );
         treatment.insulin = insulin.value;
@@ -193,7 +194,7 @@ function generate_nightscout_treatments(entries, then) {
       } else {
         var f_date = moment(element.timestamp);
         treatment.eventType = 'Carb Correction';
-        treatment.eventTime = new Date(f_date + 420*60000).toISOString( );
+        treatment.eventTime = new Date(f_date + offset*60000).toISOString( );
         //treatment.eventTime = new Date(f_date).toISOString( );
         //treatment.eventTime = f_date.toISOString( );
       }
@@ -234,7 +235,7 @@ function generate_nightscout_treatments(entries, then) {
       if (result[0] == undefined) {
         var f_date = moment(element.timestamp);
         treatment.eventType = 'Correction Bolus';
-        treatment.eventTime = new Date(f_date + 420*60000).toISOString( );
+        treatment.eventTime = new Date(f_date + offset*60000).toISOString( );
         treatment.insulin = element.value;
         //treatment.eventTime = f_date.toISOString( );
         treatments.push(treatment);
@@ -250,7 +251,7 @@ function generate_nightscout_treatments(entries, then) {
       
       var f_date = moment(element.pumpTimestamp);
       treatment.eventType = 'Meal Bolus';
-      treatment.eventTime = new Date(f_date + 420*60000).toISOString( );
+      treatment.eventTime = new Date(f_date + offset*60000).toISOString( );
       treatment.insulin = element.insulinDelivered;
       treatment.carbs = element.carbsInput;
       treatment.notes = JSON.stringify(element);
